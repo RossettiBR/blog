@@ -1,4 +1,4 @@
-FROM python:3.10.6-alpine3.17
+FROM python:3.10-alpine3.17
 LABEL mantiner="pastarossetti@hotmail.com"
 
 # Essa variável de ambiente é usada para controlar se o Python deve 
@@ -11,8 +11,8 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Copia a pasta "djangoapp" e "scripts" para dentro do container.
-COPY ./djangoapp /project
-COPY ./scripts /scripts
+COPY djangoapp /djangoapp
+COPY scripts /scripts
 
 # Entra na pasta djangoapp no container
 WORKDIR /djangoapp
@@ -27,7 +27,7 @@ EXPOSE 8000
 # Agrupar os comandos em um único RUN pode reduzir a quantidade de camadas da 
 # imagem e torná-la mais eficiente.
 RUN python -m venv /venv && \
-  # /venv/bin/pip install --upgrade pip && \
+  /venv/bin/pip install --upgrade pip && \
   /venv/bin/pip install -r /djangoapp/requirements.txt && \
   adduser --disabled-password --no-create-home duser && \
   mkdir -p /data/web/static && \
@@ -44,7 +44,7 @@ RUN python -m venv /venv && \
 ENV PATH="/scripts:/venv/bin:$PATH"
 
 # Muda o usuário para duser
-USER duser
+# USER duser
 
 # Executa o arquivo scripts/commands.sh
 CMD ["commands.sh"]
