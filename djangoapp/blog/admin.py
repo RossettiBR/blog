@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Category, Tag, Page, Posts
+from blog.models import Category, Tag, Page, Post
 
 
 @admin.register(Category)
@@ -38,7 +38,7 @@ class PageAdmin(admin.ModelAdmin):
     }
 
 
-@admin.register(Posts)
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = 'id', 'title', 'is_published',  'created_by',
     list_display_links = 'title',
