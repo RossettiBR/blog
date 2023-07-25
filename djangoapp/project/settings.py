@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'site_setup.context_processors.context_processors_example',
                 'site_setup.context_processors.site_setup',
+                'blog.context_processors.blog',
             ],
         },
     },
