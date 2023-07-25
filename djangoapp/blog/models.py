@@ -64,7 +64,7 @@ class Page(models.Model):
         return self.title
 
 
-class Posts(models.Model):
+class Post(models.Model):
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
