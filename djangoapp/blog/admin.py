@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Category, Tag
+from blog.models import Category, Tag, Page
 
 
 @admin.register(Category)
@@ -23,4 +23,16 @@ class TagAdmin(admin.ModelAdmin):
     ordering = '-id',
     prepopulated_fields = {
         "slug": ('name',),
+    }
+
+
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+    list_display = 'id', 'title', 'slug',
+    list_display_links = 'title',
+    search_fields = 'id', 'title', 'slug',
+    list_per_page = 10
+    ordering = '-id',
+    prepopulated_fields = {
+        "slug": ('title',),
     }
