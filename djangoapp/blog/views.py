@@ -1,8 +1,7 @@
 from typing import Any
-from django import http
 
 from django.db.models.query import QuerySet
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from blog.models import Post, Page
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -67,7 +66,7 @@ class CreatedByListView(PostListView):
         })
 
         return super().get(request, *args, **kwargs)
-    
+
 
 class PageDetailView(DetailView):
     model = Page
