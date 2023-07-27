@@ -1,28 +1,32 @@
+from typing import Any, Dict
+from django import http
 from django.core.paginator import Paginator
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from blog.models import Post, Page
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.views.generic import ListView
 
 
 PER_PAGE = 9
 
 
-def index(request):
-    posts = Post.objects.get_published()
-    paginator = Paginator(posts, PER_PAGE)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+class PostListView(ListView):
+    template_name = 'blog/pages/index.html'
+    context_object_name = 'posts'
+    paginate_by = PER_PAGE
+    queryset = Post.objects.get_published()
 
-    return render(
-        request,
-        'blog/pages/index.html',
-        {
-            'page_obj': page_obj,
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context.update({
             'page_title': 'Home - ',
-        }
-    )
+        })
+
+        return context
 
 
 def created_by(request, author_pk):
@@ -30,14 +34,13 @@ def created_by(request, author_pk):
 
     if user is None:
         raise Http404()
-    
+
     posts = Post.objects.get_published().filter(created_by__pk=author_pk)
     user_full_name = user.username
 
     if user.first_name:
         user_full_name = f'{user.first_name} {user.last_name}'
-
-    page_title = 'Posts de ' + user_full_name 
+    page_title = 'Posts de ' + user_full_name + ' - '
 
     paginator = Paginator(posts, PER_PAGE)
     page_number = request.GET.get("page")
@@ -51,6 +54,11 @@ def created_by(request, author_pk):
             'page_title': page_title,
         }
     )
+
+
+class CreatedByListView(PostListView):
+    def setup(self, *args, **kwargs):
+        return super().setup(*args, **kwargs)
 
 
 def page(request, slug):
