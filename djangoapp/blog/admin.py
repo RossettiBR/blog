@@ -31,10 +31,11 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Page)
 class PageAdmin(SummernoteModelAdmin):
     summernote_fields = ('content',)
-    list_display = 'id', 'title', 'slug',
+    list_display = 'id', 'title', 'slug', 'is_published',
     list_display_links = 'title',
     search_fields = 'id', 'title', 'slug',
     list_per_page = 10
+    list_editable = 'is_published',
     ordering = '-id',
     prepopulated_fields = {
         "slug": ('title',),
